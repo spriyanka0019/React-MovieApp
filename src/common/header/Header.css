@@ -12,10 +12,10 @@
     animation: movieLogo infinite 8s linear;
 }
 
-.buttonLogin{
+.button-login{
     float: right;
 }
-.buttonBookShow{
+.button-bookshow{
     float:  right;
     margin-right: 16px;
 
