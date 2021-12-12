@@ -1,11 +1,40 @@
 .header{
     background-color: #222;
     height: 36px;
-    padding: 8px 8px 32px 16px;
+    padding: 8px 32px 8px 16px;
+
 }
 
 .logo{
     background-color: #ff7f7f;
     height: 35px;
     float: left;
+    animation: movieLogo infinite 8s linear;
+}
+
+.buttonLogin{
+    float: right;
+}
+.buttonBookShow{
+    float:  right;
+    margin-right: 16px;
+
+}
+
+@keyframes movieLogo {
+    0%{
+        transform: rotateY(0deg);
+    }
+    100%{
+        transform: rotateY(180deg);
+    }
+    
+}
+.modal{
+    top: 50%;
+    left:50%;
+    right:auto;
+    bottom:auto;
+    margin-right: '-50%';
+    transform: translate(50%, -50%)
 }
