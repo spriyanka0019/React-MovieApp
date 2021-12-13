@@ -91,20 +91,20 @@ class Header extends Component {
     }
 
     modalCloseHandler = () => {
-        this.setState({ isModalOpen : false });
+        this.setState({ isModalOpen: false });
     }
 
-    loginClickHandler=()=>{
-        if(this.state.username===""){
-            this.setState({usernameRequired:"displayBlock"})
-        }else{
-            this.setState({usernameRequired:"displayNone"})
+    loginClickHandler = () => {
+        if (this.state.username === "") {
+            this.setState({ usernameRequired: "displayBlock" })
+        } else {
+            this.setState({ usernameRequired: "displayNone" })
         }
 
-        if(this.state.loginPassword===""){
-            this.setState({loginPasswordRequired:"displayBlock"})
-        }else{
-            this.setState({loginPasswordRequired:"displayNone"})
+        if (this.state.loginPassword === "") {
+            this.setState({ loginPasswordRequired: "displayBlock" })
+        } else {
+            this.setState({ loginPasswordRequired: "displayNone" })
         }
 
         let dataLogin = null;
@@ -130,64 +130,64 @@ class Header extends Component {
 
     }
 
-    usernameChangeHandler = (e)=>{
-        this.setState({username:e.target.value})
+    usernameChangeHandler = (e) => {
+        this.setState({ username: e.target.value })
     }
 
-    loginPasswordChangeHandler = (e) =>{
-        this.setState({loginPassword:e.target.value})
+    loginPasswordChangeHandler = (e) => {
+        this.setState({ loginPassword: e.target.value })
     }
 
 
-    firstNameChangeHandler = (e) =>{
-        this.setState({firstname:e.target.value})
+    firstNameChangeHandler = (e) => {
+        this.setState({ firstname: e.target.value })
     }
 
-    lastNameChangeHandler = (e) =>{
-        this.setState({lastname:e.target.value})
+    lastNameChangeHandler = (e) => {
+        this.setState({ lastname: e.target.value })
     }
 
-    registerPasswordChangeHandler = (e) =>{
-        this.setState({registerPassword:e.target.value})
+    registerPasswordChangeHandler = (e) => {
+        this.setState({ registerPassword: e.target.value })
     }
 
-    emailChangeHandler = (e) =>{
-        this.setState({email:e.target.value})
+    emailChangeHandler = (e) => {
+        this.setState({ email: e.target.value })
     }
 
-    contactChangeHandler = (e) =>{
-        this.setState({contact:e.target.value})
+    contactChangeHandler = (e) => {
+        this.setState({ contact: e.target.value })
     }
 
-    registerClickHandler = ()=>{
-        if(this.state.email===""){
-            this.setState({emailRequired:"displayBlock"});
-        }else{
-            this.setState({emailRequired:"displayNone"});
+    registerClickHandler = () => {
+        if (this.state.email === "") {
+            this.setState({ emailRequired: "displayBlock" });
+        } else {
+            this.setState({ emailRequired: "displayNone" });
         }
 
-        if(this.state.firstname===""){
-            this.setState({firstnameRequired:"displayBlock"});
-        }else{
-            this.setState({firstnameRequired:"displayNone"});
+        if (this.state.firstname === "") {
+            this.setState({ firstnameRequired: "displayBlock" });
+        } else {
+            this.setState({ firstnameRequired: "displayNone" });
         }
 
-        if(this.state.registerPassword===""){
-            this.setState({registerPasswordRequired:"displayBlock"});
-        }else{
-            this.setState({registerPasswordRequired:"displayNone"});
+        if (this.state.registerPassword === "") {
+            this.setState({ registerPasswordRequired: "displayBlock" });
+        } else {
+            this.setState({ registerPasswordRequired: "displayNone" });
         }
 
-        if(this.state.contact===""){
-            this.setState({contactRequired:"displayBlock"});
-        }else{
-            this.setState({contactRequired:"displayNone"});
+        if (this.state.contact === "") {
+            this.setState({ contactRequired: "displayBlock" });
+        } else {
+            this.setState({ contactRequired: "displayNone" });
         }
 
-        if(this.state.lastname===""){
-            this.setState({lastnameRequired:"displayBlock"});
-        }else{
-            this.setState({lastnameRequired:"displayNone"});
+        if (this.state.lastname === "") {
+            this.setState({ lastnameRequired: "displayBlock" });
+        } else {
+            this.setState({ lastnameRequired: "displayNone" });
         }
         let params = JSON.stringify({
             "email_address": this.state.email,
@@ -201,15 +201,24 @@ class Header extends Component {
         let xhrSignup = new XMLHttpRequest();
         let that = this;
 
-        xhrSignup.addEventListener("readystatechange",function(){
-            if(this.readyState==4){
-                that.setState({registrationSuccess:true})
+        xhrSignup.addEventListener("readystatechange", function () {
+            if (this.readyState == 4) {
+                that.setState({ registrationSuccess: true })
             }
         })
 
-        xhrSignup.open("POST","http://localhost:8085/api/v1/signup")
-        xhrSignup.setRequestHeader("Content-Type","application/json");
+        xhrSignup.open("POST", "http://localhost:8085/api/v1/signup")
+        xhrSignup.setRequestHeader("Content-Type", "application/json");
         xhrSignup.send(params);
+    }
+
+    logoutHandler = (e) => {
+        sessionStorage.removeItem("uuid");
+        sessionStorage.removeItem("access-token");
+
+        this.setState({
+            loggedIn: false
+        });
     }
 
 
@@ -217,7 +226,7 @@ class Header extends Component {
         return (
             <div className="header">
                 <img src={logo} className="logo" alt="Logo" />
-    
+
                 {!this.state.loggedIn ?
                     <div className="button-login">
                         <Button variant="contained" color="default" onClick={this.openModalHandler}>
@@ -231,6 +240,7 @@ class Header extends Component {
                         </Button>
                     </div>
                 }
+
                 {this.props.showBookShowButton === "true" && !this.state.loggedIn
                     ? <div className="button-bookshow">
                         <Button variant="contained" color="primary" onClick={this.openModalHandler}>
@@ -239,25 +249,18 @@ class Header extends Component {
                     </div>
                     : ""
                 }
-               {this.props.showBookShowButton === "true" && !this.state.loggedIn
-                        ? <div className="button-bookshow">
-                            <Button variant="contained" color="primary" onClick={this.openModalHandler}>
+
+                {this.props.showBookShowButton === "true" && this.state.loggedIn
+                    ? <div className="button-bookshow">
+                        <Link to={"/bookshow/" + this.props.id}>
+                            <Button variant="contained" color="primary">
                                 Book Show
                             </Button>
-                        </div>
-                        : ""
-                    }
+                        </Link>
+                    </div>
+                    : ""
+                }
 
-                    {this.props.showBookShowButton === "true" && this.state.loggedIn
-                        ? <div className="button-bookshow">
-                            <Link to={"/bookshow/" + this.props.id}>
-                                <Button variant="contained" color="primary">
-                                    Book Show
-                                </Button>
-                            </Link>
-                        </div>
-                        : ""
-                    }
                 <Modal
                     ariaHideApp={false}
                     isOpen={this.state.isModalOpen}
