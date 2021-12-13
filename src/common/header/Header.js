@@ -107,25 +107,26 @@ class Header extends Component {
             this.setState({loginPasswordRequired:"displayNone"})
         }
 
+        let dataLogin = null;
         let xhrLogin = new XMLHttpRequest();
-        xhrLogin.addEventListener("readystatechange",function(){
-            if(this.readyState===4){
-                sessionStorage.setItem("uuid",JSON.parse(this.responseText).id);
-                sessionStorage.setItem("access-token",xhrLogin.getResponseHeader("access-token"))
+        let that = this;
+        xhrLogin.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
+                sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
+
+                that.setState({
+                    loggedIn: true
+                });
+
+                that.modalCloseHandler();
             }
-
-            this.setState({
-                loggedIn:true
-            });
-
-            this.modalCloseHandler();
         });
 
-        xhrLogin.open('POST',this.props.baseURL+"auth/login");
-        xhrLogin.setRequestHeader("Authorization","Basic "+window.btoa(this.state.username+this.state.loginPassword));
-        xhrLogin.setRequestHeader("Content-Type","application/json");
-        xhrLogin.setRequestHeader("Cache-Control","no-cache");
-        xhrLogin.send(null);
+        xhrLogin.open("POST", "http://localhost:8085/api/v1/auth/login");
+        xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
+        xhrLogin.setRequestHeader("Content-Type", "application/json");
+        xhrLogin.send(dataLogin);
 
     }
 
@@ -159,14 +160,56 @@ class Header extends Component {
     }
 
     registerClickHandler = ()=>{
-        // if(this.state.emailRequired===""){
-        //     this.setState({emailRequired:"displayNone"});
-        // }else{
-        //     this.setState({emailRequired:"displayNone"});
-        // }
-        // let params = JSON.stringify{
-            
-        // }
+        if(this.state.email===""){
+            this.setState({emailRequired:"displayBlock"});
+        }else{
+            this.setState({emailRequired:"displayNone"});
+        }
+
+        if(this.state.firstname===""){
+            this.setState({firstnameRequired:"displayBlock"});
+        }else{
+            this.setState({firstnameRequired:"displayNone"});
+        }
+
+        if(this.state.registerPassword===""){
+            this.setState({registerPasswordRequired:"displayBlock"});
+        }else{
+            this.setState({registerPasswordRequired:"displayNone"});
+        }
+
+        if(this.state.contact===""){
+            this.setState({contactRequired:"displayBlock"});
+        }else{
+            this.setState({contactRequired:"displayNone"});
+        }
+
+        if(this.state.lastname===""){
+            this.setState({lastnameRequired:"displayBlock"});
+        }else{
+            this.setState({lastnameRequired:"displayNone"});
+        }
+        let params = JSON.stringify({
+            "email_address": this.state.email,
+            "first_name": this.state.firstname,
+            "last_name": this.state.lastname,
+            "mobile_number": this.state.contact,
+            "password": this.state.registerPassword
+
+        })
+
+        let xhrSignup = new XMLHttpRequest();
+        let that = this;
+
+        xhrSignup.addEventListener("readystatechange",function(){
+            if(this.readyState==4){
+                that.setState({registrationSuccess:true})
+            }
+        })
+
+        xhrSignup.open("POST","http://localhost:8085/api/v1/signup")
+        xhrSignup.setRequestHeader("Content-Type","application/json");
+        xhrSignup.send(params);
     }
 
 
@@ -196,16 +239,25 @@ class Header extends Component {
                     </div>
                     : ""
                 }
-                {this.props.showBookShowButton === "true" && this.state.loggedIn
-                    ? <div className="bookshow-button">
-                        {/* <Link to={"/bookshow/" + this.props.id}>
-                            <Button variant="contained" color="primary">
+               {this.props.showBookShowButton === "true" && !this.state.loggedIn
+                        ? <div className="button-bookshow">
+                            <Button variant="contained" color="primary" onClick={this.openModalHandler}>
                                 Book Show
                             </Button>
-                        </Link> */}
-                    </div>
-                    : ""
-                }
+                        </div>
+                        : ""
+                    }
+
+                    {this.props.showBookShowButton === "true" && this.state.loggedIn
+                        ? <div className="button-bookshow">
+                            <Link to={"/bookshow/" + this.props.id}>
+                                <Button variant="contained" color="primary">
+                                    Book Show
+                                </Button>
+                            </Link>
+                        </div>
+                        : ""
+                    }
                 <Modal
                     ariaHideApp={false}
                     isOpen={this.state.isModalOpen}
