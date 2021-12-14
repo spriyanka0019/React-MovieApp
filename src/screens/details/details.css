@@ -15,14 +15,17 @@
     display:flex
 
 }
-.left{
+.left-detail{
+width: 20%;
+text-align: center;
+}
+
+.right-detail{
+    width: 20%;
 
 }
 
-.right{
+.middle-detail{
+    width: 60%;
 
-}
-
-.middle{
-    
 }
