@@ -12,7 +12,6 @@ import Input from '@material-ui/core/Input';
 import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Link } from 'react-router-dom';
-import { ThreeSixty } from '@material-ui/icons';
 
 const modalStyle = {
     content: {
@@ -202,7 +201,7 @@ class Header extends Component {
         let that = this;
 
         xhrSignup.addEventListener("readystatechange", function () {
-            if (this.readyState == 4) {
+            if (this.readyState === 4) {
                 that.setState({ registrationSuccess: true })
             }
         })

@@ -82,7 +82,7 @@ class Home extends Component {
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.send(data);
 
-        // Get released movies
+        // show released movies
         let dataReleased = null;
         let xhrReleased = new XMLHttpRequest();
         xhrReleased.addEventListener("readystatechange", function () {
@@ -97,7 +97,7 @@ class Home extends Component {
         xhrReleased.setRequestHeader("Cache-Control", "no-cache");
         xhrReleased.send(dataReleased);
 
-        // Get filters
+        // show filters
         let dataGenres = null;
         let xhrGenres = new XMLHttpRequest();
         xhrGenres.addEventListener("readystatechange", function () {
@@ -112,7 +112,7 @@ class Home extends Component {
         xhrGenres.setRequestHeader("Cache-Control", "no-cache");
         xhrGenres.send(dataGenres);
 
-        // Get artists
+        // show artists
         let dataArtists = null;
         let xhrArtists = new XMLHttpRequest();
         xhrArtists.addEventListener("readystatechange", function () {
