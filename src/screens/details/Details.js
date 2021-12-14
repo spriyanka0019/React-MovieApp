@@ -113,7 +113,7 @@ class Details extends Component {
                         <br />
                         <div>
                             <Typography>
-                                <span className="bold">Genres: </span> {movie.genres.join(', ')}
+                                {/* <span className="bold">Genres: </span> {movie.genres.join(',')} */}
                             </Typography>
                         </div>
                         <div>
