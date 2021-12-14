@@ -47,6 +47,10 @@ class Details extends Component {
         }
     }
 
+    artistClickHandler = (url) => {
+        window.location = url;
+    }
+
     componentWillMount() {
         let that = this;
         let dataMovie = null;
@@ -64,19 +68,19 @@ class Details extends Component {
         xhrMovie.send(dataMovie);
     }
 
-    stariconsClickHandler=(id)=>{
+    stariconsClickHandler = (id) => {
         let starIconsList = [];
-        for(let star of this.state.rating){
+        for (let star of this.state.rating) {
             let starNode = star;
-            if(star.id<=id){
+            if (star.id <= id) {
                 starNode.color = "yellow"
-            }else{
-                starNode.color="black";
+            } else {
+                starNode.color = "black";
             }
             starIconsList.push(starNode);
         }
 
-        this.setState({rating:starIconsList})
+        this.setState({ rating: starIconsList })
     }
 
     render() {
@@ -145,14 +149,35 @@ class Details extends Component {
                             <span className="bold">Rate this movie: </span>
                         </Typography>
                         {
-                            this.state.rating.map(icons=>{
+                            this.state.rating.map(icons => (
                                 <StarBorderIcon
-                                 className={icons.color}
-                                 key={"icons"+icons.id}
-                                 onClick={()=>this.stariconsClickHandler(icons.id)}
+                                    className={icons.color}
+                                    key={"icons" + icons.id}
+                                    onClick={() => this.stariconsClickHandler(icons.id)}
                                 />
-                            })
+                            ))
                         }
+
+                        <div className="bold marginBottom16 marginTop16">
+                            <Typography>
+                                <span className="bold">Artists:</span>
+                            </Typography>
+                        </div>
+                        <div className="paddingRight">
+                            <GridList cellHeight={160} cols={2}>
+                                {movie.artists != null && movie.artists.map(artist => (
+                                    <GridListTile
+                                        className="gridTile"
+                                        onClick={() => this.artistClickHandler(artist.wiki_url)}
+                                        key={artist.id}>
+                                        <img src={artist.profile_url} alt={artist.first_name + " " + artist.last_name} />
+                                        <GridListTileBar
+                                            title={artist.first_name + " " + artist.last_name}
+                                        />
+                                    </GridListTile>
+                                ))}
+                            </GridList>
+                        </div>
                     </div>
 
 
