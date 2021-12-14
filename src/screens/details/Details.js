@@ -3,6 +3,11 @@ import Header from '../../common/header/Header';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import './Details.css';
+import YouTube from 'react-youtube';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 class Details extends Component {
     constructor() {
@@ -92,6 +97,22 @@ class Details extends Component {
                                 <span className="bold">Genres: </span> {movie.genres.join(', ')}
                             </Typography>
                         </div>
+                        <div>
+                            <Typography>
+                                <span className='bold'>Duration: </span> {movie.duration}
+                            </Typography>
+                        </div>
+                        <div>
+                            <Typography>
+                                <span className='bold'>Release Date: </span> {new Date(movie.release_date).toDateString()}
+                            </Typography>
+                        </div>
+                        <div>
+                            <Typography><span className="bold"> Rating:</span> {movie.critics_rating}  </Typography>
+                        </div>
+                        <div className="marginTop16">
+                            <Typography><span className="bold">Plot:</span> <a href={movie.wiki_url}>(Wiki Link)</a> {movie.storyline} </Typography>
+                        </div>
                     </div>
 
                     <div className="right-detail">
@@ -99,6 +120,7 @@ class Details extends Component {
                             <span className="bold">Rate this movie: </span>
                         </Typography>
                     </div>
+
 
                 </div>
             </div>
