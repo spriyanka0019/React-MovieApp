@@ -8,7 +8,6 @@
 .logo{
     background-color: #ff7f7f;
     height: 35px;
-    float: left;
     animation: movieLogo infinite 8s linear;
 }
 
@@ -17,17 +16,12 @@
 }
 .button-bookshow{
     float:  right;
-    margin-right: 16px;
+    margin-right: 8px;
 
 }
 
 @keyframes movieLogo {
-    0%{
-        transform: rotateY(0deg);
-    }
-    100%{
-        transform: rotateY(180deg);
-    }
+    from { transform: scaleX(-1); }
     
 }
 .modal{

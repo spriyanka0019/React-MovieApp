@@ -79,6 +79,7 @@ class Home extends Component {
         });
 
         xhr.open("GET", this.props.baseUrl + "movies?status=PUBLISHED");
+        xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.send(data);
 
@@ -94,6 +95,7 @@ class Home extends Component {
         });
 
         xhrReleased.open("GET", this.props.baseUrl + "movies?status=RELEASED");
+        xhrReleased.setRequestHeader("Content-Type", "application/json");
         xhrReleased.setRequestHeader("Cache-Control", "no-cache");
         xhrReleased.send(dataReleased);
 
@@ -109,6 +111,7 @@ class Home extends Component {
         });
 
         xhrGenres.open("GET", this.props.baseUrl + "genres");
+        xhrGenres.setRequestHeader("Content-Type", "application/json");
         xhrGenres.setRequestHeader("Cache-Control", "no-cache");
         xhrGenres.send(dataGenres);
 
@@ -124,6 +127,7 @@ class Home extends Component {
         });
 
         xhrArtists.open("GET", this.props.baseUrl + "artists");
+        xhrArtists.setRequestHeader("Content-Type", "application/json");
         xhrArtists.setRequestHeader("Cache-Control", "no-cache");
         xhrArtists.send(dataArtists);
     }
@@ -182,6 +186,7 @@ class Home extends Component {
         });
 
         xhrFilter.open("GET", this.props.baseUrl + "movies" + encodeURI(queryString));
+        xhrFilter.setRequestHeader("Content-Type", "application/json");
         xhrFilter.setRequestHeader("Cache-Control", "no-cache");
         xhrFilter.send(dataFilter);
     }
@@ -190,7 +195,7 @@ class Home extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <Header baseUrl={this.props.baseUrl} />
+                <Header baseUrl={this.props.baseUrl} showBookShowButton="true" />
 
                 <div className={classes.upcomingMoviesHeading}>
                     <span>Upcoming Movies</span>
