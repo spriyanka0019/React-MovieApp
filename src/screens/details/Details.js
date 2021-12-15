@@ -97,8 +97,8 @@ class Details extends Component {
             <div className="details">
                 <Header baseUrl={this.props.baseUrl} showBookShowButton="true" />
                 <div className="button-back">
-                    <Typography>
-                        <Link to="/">  &#60; Back to Home</Link>
+                    <Typography >
+                        <Link to="/" style={{ textDecoration: 'none', color:'black' }}>  &#60; Back to Home</Link>
                     </Typography>
                 </div>
                 <div className="flex-container">
