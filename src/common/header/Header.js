@@ -242,7 +242,7 @@ class Header extends Component {
 
                 {this.props.showBookShowButton === "true" && !this.state.loggedIn
                     ? <div className="button-bookshow">
-                        <Button variant="contained" color="primary" onClick={this.openModalHandler}>
+                        <Button variant="contained" color="primary" style={{ textDecoration: 'none', color:'white' }} onClick={this.openModalHandler}>
                             Book Show
                         </Button>
                     </div>
@@ -251,7 +251,7 @@ class Header extends Component {
 
                 {this.props.showBookShowButton === "true" && this.state.loggedIn
                     ? <div className="button-bookshow">
-                        <Link to={"/bookshow/" + this.props.id}>
+                        <Link to={"/bookshow/" + this.props.id} style={{ textDecoration: 'none', color:'white' }}>
                             <Button variant="contained" color="primary">
                                 Book Show
                             </Button>

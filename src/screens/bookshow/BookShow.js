@@ -196,7 +196,7 @@ const BookShow = (props) => {
       <Header baseUrl={props.baseUrl} />
       <div className="bookShow">
         <Typography className="back">
-          <Link to={"/"}>
+          <Link to={"/"} style={{ textDecoration: 'none', color:'black' }}>
             &#60; Back to Movie Details
           </Link>
         </Typography>
