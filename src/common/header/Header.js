@@ -40,9 +40,8 @@ class Header extends Component {
     constructor() {
         super();
         this.state = {
-            value: 0,
             isModalOpen: false,
-            loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
+            value: 0,
             usernameRequired: "dispNone",
             username: "",
             loginPasswordRequired: "dispNone",
@@ -58,28 +57,28 @@ class Header extends Component {
             contactRequired: "dispNone",
             contact: "",
             registrationSuccess: false,
+            loggedIn: sessionStorage.getItem("access-token") == null ? false : true
         }
     }
 
 
     openModalHandler = () => {
         this.setState({
-            value: 0,
             isModalOpen: true,
-            loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
-            usernameRequired: "displayNone",
+            value: 0,
+            usernameRequired: "dispNone",
             username: "",
-            loginPasswordRequired: "displayNone",
+            loginPasswordRequired: "dispNone",
             loginPassword: "",
-            firstnameRequired: "displayNone",
+            firstnameRequired: "dispNone",
             firstname: "",
-            lastnameRequired: "displayNone",
+            lastnameRequired: "dispNone",
             lastname: "",
-            emailRequired: "displayNone",
+            emailRequired: "dispNone",
             email: "",
-            registerPasswordRequired: "displayNone",
+            registerPasswordRequired: "dispNone",
             registerPassword: "",
-            contactRequired: "displayNone",
+            contactRequired: "dispNone",
             contact: ""
         });
     }
@@ -94,17 +93,8 @@ class Header extends Component {
     }
 
     loginClickHandler = () => {
-        if (this.state.username === "") {
-            this.setState({ usernameRequired: "displayBlock" })
-        } else {
-            this.setState({ usernameRequired: "displayNone" })
-        }
-
-        if (this.state.loginPassword === "") {
-            this.setState({ loginPasswordRequired: "displayBlock" })
-        } else {
-            this.setState({ loginPasswordRequired: "displayNone" })
-        }
+        this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+        this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
 
         let dataLogin = null;
         let xhrLogin = new XMLHttpRequest();
@@ -122,11 +112,11 @@ class Header extends Component {
             }
         });
 
-        xhrLogin.open("POST", "http://localhost:8085/api/v1/auth/login");
+        xhrLogin.open("POST", this.props.baseUrl + "auth/login");
         xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
         xhrLogin.setRequestHeader("Content-Type", "application/json");
+        xhrLogin.setRequestHeader("Cache-Control", "no-cache");
         xhrLogin.send(dataLogin);
-
     }
 
     usernameChangeHandler = (e) => {
@@ -159,55 +149,44 @@ class Header extends Component {
     }
 
     registerClickHandler = () => {
-        if (this.state.email === "") {
-            this.setState({ emailRequired: "displayBlock" });
-        } else {
-            this.setState({ emailRequired: "displayNone" });
-        }
+        this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+        this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
+        this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+        this.state.registerPassword === "" ? this.setState({ registerPasswordRequired: "dispBlock" }) : this.setState({ registerPasswordRequired: "dispNone" });
+        this.state.contact === "" ? this.setState({ contactRequired: "dispBlock" }) : this.setState({ contactRequired: "dispNone" });
 
-        if (this.state.firstname === "") {
-            this.setState({ firstnameRequired: "displayBlock" });
-        } else {
-            this.setState({ firstnameRequired: "displayNone" });
-        }
-
-        if (this.state.registerPassword === "") {
-            this.setState({ registerPasswordRequired: "displayBlock" });
-        } else {
-            this.setState({ registerPasswordRequired: "displayNone" });
-        }
-
-        if (this.state.contact === "") {
-            this.setState({ contactRequired: "displayBlock" });
-        } else {
-            this.setState({ contactRequired: "displayNone" });
-        }
-
-        if (this.state.lastname === "") {
-            this.setState({ lastnameRequired: "displayBlock" });
-        } else {
-            this.setState({ lastnameRequired: "displayNone" });
-        }
         let params = JSON.stringify({
             "email_address": this.state.email,
             "first_name": this.state.firstname,
             "last_name": this.state.lastname,
             "mobile_number": this.state.contact,
             "password": this.state.registerPassword
-
-        })
+        });
 
         let xhrSignup = new XMLHttpRequest();
         let that = this;
-
-        xhrSignup.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                that.setState({ registrationSuccess: true })
+        // xhrSignup.addEventListener("readystatechange", function () {
+        //     if (this.readyState === 4) {
+        //         that.setState({
+        //             registrationSuccess: true
+        //         });
+        //     }
+        // });
+        xhrSignup.addEventListener("readystatechange",(res)=>{
+            if (res.target.status === 201) {
+                that.setState({
+                    registrationSuccess: true
+                });
+            } else {
+                this.setState({
+                    registrationSuccess: 'failed'
+                })
             }
         })
 
-        xhrSignup.open("POST", "http://localhost:8085/api/v1/signup")
+        xhrSignup.open("POST", this.props.baseUrl + "signup");
         xhrSignup.setRequestHeader("Content-Type", "application/json");
+        xhrSignup.setRequestHeader("Cache-Control", "no-cache");
         xhrSignup.send(params);
     }
 
