@@ -12,6 +12,8 @@ import Input from '@material-ui/core/Input';
 import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 
 const modalStyle = {
     content: {
@@ -96,27 +98,28 @@ class Header extends Component {
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
         this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
 
-        let dataLogin = null;
-        let xhrLogin = new XMLHttpRequest();
-        let that = this;
-        xhrLogin.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
-                sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
+        const headers = {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
+            "Authorization": "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword)
+        }
 
-                that.setState({
-                    loggedIn: true
-                });
+        axios.post(this.props.baseUrl + "auth/login", {}, {
+            headers
+        }).then(res => {
+            console.log(res);
+            sessionStorage.setItem("uuid", res.data.id);
+            sessionStorage.setItem("access-token", res.headers["access-token"]);
 
-                that.modalCloseHandler();
-            }
+            this.setState({
+                loggedIn: true
+            });
+
+            this.modalCloseHandler();
+        }).catch((error) => {
+            // handle error
+            console.log(error);
         });
-
-        xhrLogin.open("POST", this.props.baseUrl + "auth/login");
-        xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.loginPassword));
-        xhrLogin.setRequestHeader("Content-Type", "application/json");
-        xhrLogin.setRequestHeader("Cache-Control", "no-cache");
-        xhrLogin.send(dataLogin);
     }
 
     usernameChangeHandler = (e) => {
@@ -172,7 +175,7 @@ class Header extends Component {
         //         });
         //     }
         // });
-        xhrSignup.addEventListener("readystatechange",(res)=>{
+        xhrSignup.addEventListener("readystatechange", (res) => {
             if (res.target.status === 201) {
                 that.setState({
                     registrationSuccess: true
@@ -221,7 +224,7 @@ class Header extends Component {
 
                 {this.props.showBookShowButton === "true" && !this.state.loggedIn
                     ? <div className="button-bookshow">
-                        <Button variant="contained" color="primary" style={{ textDecoration: 'none', color:'white' }} onClick={this.openModalHandler}>
+                        <Button variant="contained" color="primary" style={{ textDecoration: 'none', color: 'white' }} onClick={this.openModalHandler}>
                             Book Show
                         </Button>
                     </div>
@@ -230,7 +233,7 @@ class Header extends Component {
 
                 {this.props.showBookShowButton === "true" && this.state.loggedIn
                     ? <div className="button-bookshow">
-                        <Link to={"/bookshow/" + this.props.id} style={{ textDecoration: 'none', color:'white' }}>
+                        <Link to={"/bookshow/" + this.props.id} style={{ textDecoration: 'none', color: 'white' }}>
                             <Button variant="contained" color="primary">
                                 Book Show
                             </Button>
